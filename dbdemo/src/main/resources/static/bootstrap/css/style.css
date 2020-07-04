@@ -1,0 +1,25 @@
+.form{background: rgba(255,255,255,0.6);width:400px;margin:120px auto;}
+/*阴影*/
+.fa{display: inline-block;top: 27px;left: 6px;position: relative;color: #ccc;}
+input[type="text"],input[type="password"]{padding-left:26px;}
+.checkbox{padding-left:21px;}
+
+.my-jumbotron {
+    /*阴影效果*/
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=4);/*ie*/
+    -moz-box-shadow: 2px 2px 10px #909090;/*firefox*/
+    -webkit-box-shadow: 2px 2px 10px #909090;/*safari或chrome*/
+    box-shadow:2px 2px 10px #909090;/*opera或ie9*/
+    background-color: white;
+}
+
+.jumbotron-num {
+    /*圆角效果*/
+    border-radius: 20px; !important;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    margin-top:20px;
+    border-radius: 10px;
+    height: 100%;
+    background: #9acfea;
+}

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+    <style>
+        body {
+            padding-top: 70px;
+            padding-left: 0px;
+            padding-right: 100px;
+            /*background-image: url("../static/pic/cool-background.jpg");*/
+            /*background-size: cover;*/
+        }
+        body.modal-open {
+            overflow-y: auto !important;
+            padding-top: 70px !important;
+            padding-left: 0px !important;
+            padding-right: 100px !important;
+        }
+        .modal-backdrop {
+            opacity: 0 !important;
+            filter: alpha(opacity=0) !important;
+        }
+
+    </style>
+
+    <title>Records</title>
+    <!-- 引入css样式 -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+
+    <link href="bootstrap/css/bootstrap-table.css" rel="stylesheet"/>
+    <link href="bootstrap/css/bootstrap-table-fixed-columns.css" rel="stylesheet">
+
+    <!--    <script src="bootstrap/js/jquery-3.3.1.min.js"></script>-->
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap-table-fixed-columns.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="bootstrap/js/bootstrap-table.js"></script>
+    <script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
+
+    <!-- Bootstrap -->
+    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="bootstrap/css/dashboard.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<!--test-->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a id="projectName" class="navbar-brand" href="/statics"></a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2 sidebar">
+            <ul class="nav nav-sidebar navbar-default" id="indexSidebar">
+                <li class="nav-item"><a href="/statics"><span class="glyphicon glyphicon-stats"/> 概要</a></li>
+                <li class="nav-item"><a href="/home"><span class="glyphicon glyphicon-user"/> 联系人列表</a></li>
+                <li class="nav-item active"><a href="/record"><span class="glyphicon glyphicon-earphone"/> 通话记录</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-10  col-sm-offset-2 main">
+
+            <!--页面-->
+            <div style="margin-left: 30px">
+                <h2>新建联系人</h2>
+            </div>
+            <form class="form-horizontal" style="margin: 50px" action="addRecord/submit" method="post">
+                <div class="form-group">
+                    <label for="inputFrom" class="col-sm-2 control-label">*拨打电话</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="from" class="form-control" id="inputFrom" placeholder="拨打电话" required oninvalid="setCustomValidity('拨打电话不为空')" oninput="setCustomValidity('')">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputTo" class="col-sm-2 control-label">*接听电话</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="to" class="form-control" id="inputTo" placeholder="接听电话" required oninvalid="setCustomValidity('接听电话不为空')" oninput="setCustomValidity('')">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="date-group1-7" class="col-sm-2 control-label">*通话时长</label>
+                    <div class="col-sm-10">
+                        <input readonly name="duration" class="form-control" type="text" id="date-group1-7" placeholder="hh:mm:ss"  required oninvalid="setCustomValidity('通话时长不为空')" oninput="setCustomValidity('')">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="date-group1-5" class="col-sm-2 control-label">*通话日期</label>
+                    <div class="col-sm-10">
+                        <input readonly name="date" class="form-control" type="text" id="date-group1-5" placeholder="YYYY-MM-DD hh:mm:ss"  required oninvalid="setCustomValidity('通话日期不为空')" oninput="setCustomValidity('')">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success" href="/addRecord/submit">新建</button>
+                        <button type="button" data-dismiss="modal" class="btn btn-default" href="/record">退出</button>
+                    </div>
+                </div>
+
+            </form>
+
+            <div class="row placeholders"></div>
+
+            <div class="table-responsive"></div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------------>
+<script>
+    window.onload = function () {
+
+        // 格式
+        new Rolldate({
+            el: '#date-group1-1',
+            format: 'YYYY-MM',
+            beginYear: 2000,
+            endYear: 2100
+        })
+        new Rolldate({
+            el: '#date-group1-2',
+            format: 'YYYY-MM-DD',
+            beginYear: 2000,
+            endYear: 2100
+        })
+        new Rolldate({
+            el: '#date-group1-3',
+            format: 'YYYY-MM-DD hh'
+        })
+        new Rolldate({
+            el: '#date-group1-4',
+            format: 'YYYY-MM-DD hh:mm',
+            beginYear: 2000,
+            endYear: 2100
+        })
+        new Rolldate({
+            el: '#date-group1-5',
+            format: 'YYYY-MM-DD hh:mm:ss',
+            beginYear: 2000,
+            endYear: 2100,
+            value: '2020-06-21 11:11:11'
+        })
+        new Rolldate({
+            el: '#date-group1-6',
+            format: 'hh:mm'
+        })
+        new Rolldate({
+            el: '#date-group1-7',
+            format: 'hh:mm:ss',
+            value: '00:00:15'
+        })
+        new Rolldate({
+            el: '#date-group1-8',
+            format: 'YYYY',
+            beginYear: 2000,
+            endYear: 2100
+        })
+        new Rolldate({
+            el: '#date-group1-9',
+            format: 'MM'
+        })
+        new Rolldate({
+            el: '#date-group1-10',
+            format: 'DD'
+        })
+        new Rolldate({
+            el: '#date-group1-11',
+            format: 'hh'
+        })
+        new Rolldate({
+            el: '#date-group1-12',
+            format: 'mm'
+        })
+        new Rolldate({
+            el: '#date-group1-13',
+            format: 'ss'
+        })
+        new Rolldate({
+            el: '#date-group1-14',
+            format: 'YYYY/DD'
+        })
+        /* 回调函数
+         * tips:	在vue及其他mvvm框架中使用时，在confirm中修改v-model绑定的数据即可
+         */
+        new Rolldate({
+            el: '#date-group2-1',
+            format: 'YYYY-MM-DD',
+            beginYear: 2000,
+            endYear: 2100,
+            init: function () {
+                console.log('插件开始触发');
+            },
+            moveEnd: function (scroll) {
+                console.log(scroll)
+                console.log('滚动结束');
+            },
+            confirm: function (date) {
+                console.log(date)
+                console.log('确定按钮触发');
+            },
+            cancel: function () {
+                console.log('插件运行取消');
+            }
+        })
+        new Rolldate({
+            el: '#date-group2-2',
+            format: 'YYYY-MM-DD',
+            beginYear: 2000,
+            endYear: 2100,
+            init: function () {
+                if (1 == 1) {
+                    console.log('阻止插件继续执行');
+                    return false;
+                }
+            }
+        })
+        new Rolldate({
+            el: '#date-group2-3',
+            format: 'YYYY-MM-DD',
+            beginYear: 2000,
+            endYear: 2100,
+            confirm: function (date) {
+                return date.replace(/-/g, '/');
+            }
+        })
+        // 自定义语言
+        var lang = {
+            title: '自定义标题',
+            cancel: '取消',
+            confirm: '确认',
+            year: '年',
+            month: '月',
+            day: '日',
+            hour: '时',
+            min: '分',
+            sec: '秒'
+        };
+        // 如果某个值未修改可不传 以上同 var lang = {title:'自定义标题'} 允许传空串
+        new Rolldate({
+            el: '#date-group3-1',
+            format: 'YYYY-MM-DD',
+            beginYear: 2000,
+            endYear: 2100,
+            lang: lang
+        })
+
+        // 设置默认日期 内部使用document.getElementById('date').bindDate = new Date('2019/05/13');
+        new Rolldate({
+            el: '#date-group4-1',
+            format: 'YYYY-MM-DD',
+            beginYear: 2000,
+            endYear: 2100,
+            value: '2017-10-21' //或2017-10-21 23:52:50
+        })
+
+        // el传dom对象，只支持单个
+        new Rolldate({
+            el: document.getElementById('date-group5-1'),
+            format: 'YYYY-MM-DD',
+            beginYear: 2000,
+            endYear: 2100
+        })
+
+        // 分钟按指定数分隔
+        new Rolldate({
+            el: '#date-group6-1',
+            format: 'hh:mm',
+            minStep: 5
+        })
+        // 使用原生click
+        new Rolldate({
+            el: '#date-group7-1',
+            trigger: 'click'
+        })
+
+        // 其他示例
+        //日期判断
+        new Rolldate({
+            el: '#date-group8-1',
+            format: 'YYYY-MM-DD',
+            beginYear: 2000,
+            endYear: 2100,
+            confirm: function (date) {
+                var d = new Date(),
+                    d1 = new Date(date.replace(/\-/g, "\/")),
+                    d2 = new Date(d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate()); //如果非'YYYY-MM-DD'格式，需要另做调整
+
+                if (d1 < d2) {
+                    alert('不能小于当前的日期');
+                    return false;
+                }
+            }
+        })
+    }
+</script>
+<script type="text/javascript" src="bootstrap/js/rolldate.min.js"></script>
+
+</body>
+</html>
